@@ -18,7 +18,9 @@ export default function AssignmentForm({ courses, assignment }: Props) {
   const [type, setType] = useState(assignment?.type ?? "assignment");
   const [dueAt, setDueAt] = useState(() => {
     if (!assignment?.due_at) return "";
-    return new Date(assignment.due_at).toISOString().slice(0, 16);
+    const d = new Date(assignment.due_at);
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
   });
   const [weight, setWeight] = useState(assignment?.weight?.toString() ?? "");
   const [description, setDescription] = useState(assignment?.description ?? "");
