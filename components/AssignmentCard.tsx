@@ -1,4 +1,4 @@
-import { Assignment, STATUS_LABELS, TYPE_LABELS, COLOR_CLASSES, formatDueLabel, msUntilDue } from "@/lib/db";
+import { Assignment, STATUS_LABELS, TYPE_LABELS, COLOR_CLASSES, formatDueLabel, formatExactDate, msUntilDue } from "@/lib/db";
 
 interface Props {
   assignment: Assignment;
@@ -8,9 +8,9 @@ interface Props {
 function urgencyBorder(a: Assignment) {
   const ms = msUntilDue(a.due_at);
   if (a.status !== "pending") return "border-border";
-  if (ms < 0)               return "border-red-400 dark:border-red-500";
-  if (ms < 24 * 3600 * 1000) return "border-amber-400 dark:border-amber-500";
-  if (ms < 7 * 24 * 3600 * 1000) return "border-[hsl(var(--accent))]";
+  if (ms < 0)                    return "border-rose-300 dark:border-rose-400/60";
+  if (ms < 24 * 3600 * 1000)    return "border-amber-300 dark:border-amber-400/60";
+  if (ms < 7 * 24 * 3600 * 1000) return "border-[hsl(var(--accent))]/60";
   return "border-border";
 }
 
@@ -18,6 +18,7 @@ export default function AssignmentCard({ assignment: a, onClick }: Props) {
   const course = a.course;
   const colorClass = course ? COLOR_CLASSES[course.color] : COLOR_CLASSES.indigo;
   const dueLabel = formatDueLabel(a.due_at);
+  const exactDate = formatExactDate(a.due_at);
 
   return (
     <button
@@ -42,10 +43,11 @@ export default function AssignmentCard({ assignment: a, onClick }: Props) {
           </div>
         </div>
         <div className="shrink-0 text-right">
-          <p className={`text-sm font-medium ${
+          <p className="text-xs text-muted-foreground">{exactDate}</p>
+          <p className={`text-sm font-medium mt-0.5 ${
             a.status !== "pending" ? "text-muted-foreground" :
-            msUntilDue(a.due_at) < 0 ? "text-red-500" :
-            msUntilDue(a.due_at) < 24 * 3600 * 1000 ? "text-amber-500" : "text-foreground"
+            msUntilDue(a.due_at) < 0 ? "text-rose-400 dark:text-rose-400" :
+            msUntilDue(a.due_at) < 24 * 3600 * 1000 ? "text-amber-400 dark:text-amber-400" : "text-foreground"
           }`}>{dueLabel}</p>
           <p className="text-xs text-muted-foreground mt-0.5">{STATUS_LABELS[a.status]}</p>
         </div>

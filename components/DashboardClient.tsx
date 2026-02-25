@@ -135,8 +135,8 @@ export default function DashboardClient({ initialAssignments, initialCourses }: 
             groups.map(g => (
               <div key={g.label}>
                 <h3 className={`text-xs font-semibold uppercase tracking-wide mb-2 ${
-                  g.label === "Overdue" ? "text-red-500" :
-                  g.label === "Due Today" ? "text-amber-500" :
+                  g.label === "Overdue" ? "text-rose-400 dark:text-rose-400/80" :
+                  g.label === "Due Today" ? "text-amber-400 dark:text-amber-400/80" :
                   "text-muted-foreground"
                 }`}>{g.label}</h3>
                 <div className="space-y-2">

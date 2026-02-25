@@ -78,12 +78,32 @@ export function msUntilDue(due_at: string): number {
 
 export function formatDueLabel(due_at: string): string {
   const ms = msUntilDue(due_at);
-  if (ms < 0) return "Overdue";
+  if (ms < 0) {
+    const over = Math.abs(ms);
+    const overH = over / (1000 * 60 * 60);
+    if (overH < 24) return `${Math.ceil(overH)}h overdue`;
+    const overD = Math.ceil(overH / 24);
+    return `${overD}d overdue`;
+  }
   const hours = ms / (1000 * 60 * 60);
+  if (hours < 1) return `${Math.ceil(hours * 60)}m left`;
   if (hours < 24) return `${Math.ceil(hours)}h left`;
   const days = Math.ceil(hours / 24);
-  if (days === 1) return "Due tomorrow";
+  if (days === 1) return "1 day left";
   return `${days} days left`;
+}
+
+export function formatExactDate(due_at: string): string {
+  const d = new Date(due_at);
+  const now = new Date();
+  const sameYear = d.getFullYear() === now.getFullYear();
+  const datePart = d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    ...(sameYear ? {} : { year: "numeric" }),
+  });
+  const timePart = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  return `${datePart} at ${timePart}`;
 }
 
 // ── DB queries ─────────────────────────────────────────────────────────────
