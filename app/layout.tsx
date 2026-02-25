@@ -5,8 +5,8 @@ import "./globals.css";
 import ThemeToggle from "@/components/ThemeToggle";
 
 export const metadata: Metadata = {
-  title: "Deadline Manager",
-  description: "Track school assignment deadlines by course.",
+  title: "DontForget",
+  description: "Track school assignment deadlines — never miss a due date.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   return NextResponse.json({
-    title: "Deadline Manager",
+    title: "DontForget",
     description:
       "Track school assignment deadlines by course, with automatic 3-day reminders.",
     version: "1.0.0",

@@ -15,7 +15,7 @@ export default async function HomePage() {
     <main className="max-w-2xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-foreground tracking-tight">Deadline Manager</h1>
+          <h1 className="text-2xl font-bold text-foreground tracking-tight">DontForget</h1>
           <p className="text-muted-foreground text-sm mt-0.5">Stay on top of your coursework.</p>
         </div>
         <Link

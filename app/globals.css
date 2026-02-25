@@ -3,31 +3,33 @@
 @tailwind utilities;
 
 @layer base {
+  /* light mode: warm rose/pink */
   :root {
-    --background: 240 18% 96%;
-    --foreground: 243 20% 15%;
-    --card: 240 15% 91%;
-    --card-foreground: 243 20% 15%;
-    --muted: 240 13% 86%;
-    --muted-foreground: 243 15% 45%;
-    --border: 240 13% 82%;
-    --input: 240 13% 82%;
-    --ring: 243 42% 50%;
-    --accent: 243 42% 50%;
+    --background: 350 40% 97%;
+    --foreground: 345 30% 15%;
+    --card: 350 30% 93%;
+    --card-foreground: 345 30% 15%;
+    --muted: 350 20% 88%;
+    --muted-foreground: 345 15% 47%;
+    --border: 350 18% 84%;
+    --input: 350 18% 84%;
+    --ring: 347 70% 52%;
+    --accent: 347 70% 52%;
     --accent-foreground: 0 0% 100%;
   }
 
+  /* dark mode: deep rose */
   .dark {
-    --background: 0 0% 13%;
-    --foreground: 240 12% 90%;
-    --card: 240 5% 17%;
-    --card-foreground: 240 12% 90%;
-    --muted: 240 5% 22%;
-    --muted-foreground: 240 10% 60%;
-    --border: 240 5% 25%;
-    --input: 240 5% 25%;
-    --ring: 243 38% 62%;
-    --accent: 243 38% 62%;
+    --background: 0 0% 12%;
+    --foreground: 350 15% 90%;
+    --card: 350 5% 16%;
+    --card-foreground: 350 15% 90%;
+    --muted: 350 5% 21%;
+    --muted-foreground: 350 8% 58%;
+    --border: 350 5% 24%;
+    --input: 350 5% 24%;
+    --ring: 347 60% 63%;
+    --accent: 347 60% 63%;
     --accent-foreground: 0 0% 100%;
   }
 }

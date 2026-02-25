@@ -1,4 +1,4 @@
-# deadline-manager
+# DontForget
 
 A Jesseverse extension for tracking school assignment deadlines by course. Courses are color-coded, assignments have types and weights, and reminders are automatically set 3 days before each due date.
 
@@ -9,7 +9,7 @@ A Jesseverse extension for tracking school assignment deadlines by course. Cours
 - **Auto-reminders** — 3-day reminder set automatically when adding an assignment
 - **Urgency grouping** — dashboard groups upcoming work into Overdue / Due Today / This Week / Later
 - **MCP integration** — full Jesseverse extension protocol with 10 actions
-- **Light/dark mode** — academic indigo palette, system preference detected on load
+- **Light/dark mode** — rose/pink palette, system preference detected on load
 
 ## Stack
 
