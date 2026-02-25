@@ -100,13 +100,8 @@ export async function GET() {
     },
     {
       name: "get_reminders",
-      description: "Get all pending assignments whose reminder time has passed.",
+      description: "Get upcoming assignments due within the next 7 days, split into two groups: due_within_3_days (high priority) and due_within_7_days. Both are arrays sorted by due date ascending.",
       parameters: [],
-    },
-    {
-      name: "snooze_reminder",
-      description: "Snooze an assignment reminder by 1 hour.",
-      parameters: [{ name: "id", type: "string", required: true, description: "Assignment UUID" }],
     },
   ]);
 }

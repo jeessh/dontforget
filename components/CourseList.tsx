@@ -63,7 +63,7 @@ export default function CourseList({ courses, assignmentCounts, onRefresh }: Pro
       {courses.map(c => {
         const cls = COLOR_CLASSES[c.color] ?? COLOR_CLASSES.indigo;
         return (
-          <div key={c.id} className="flex items-center justify-between p-4 rounded-xl bg-card border border-border">
+          <div key={c.id} className="flex items-center justify-between p-4 rounded-xl bg-card border border-border shadow-sm">
             <div className="flex items-center gap-3">
               <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${cls}`}>
                 {c.code || c.name}

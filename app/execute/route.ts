@@ -148,56 +148,42 @@ export async function POST(req: NextRequest) {
 
     // ── get_reminders ─────────────────────────────────────────────────────────
     if (action === "get_reminders") {
-      const now = new Date().toISOString();
+      const now = Date.now();
+      const in7Days = new Date(now + 7 * 24 * 3600 * 1000).toISOString();
+
       const { data, error } = await supabase
         .from("assignments")
         .select("*, course:courses(*)")
-        .lte("remind_at", now)
-        .not("remind_at", "is", null)
-        .eq("status", "pending")
+        .in("status", ["pending", "late"])
+        .lte("due_at", in7Days)
         .order("due_at", { ascending: true });
       if (error) throw error;
 
-      // Map to hub reminder shape: { id, role, company, url }
-      const reminders = (data ?? []).map((a: Record<string, unknown>) => {
+      const in3Days = now + 3 * 24 * 3600 * 1000;
+
+      const dueSoon:     Record<string, unknown>[] = [];
+      const dueThisWeek: Record<string, unknown>[] = [];
+
+      for (const a of (data ?? []) as Record<string, unknown>[]) {
         const course = a.course as Record<string, unknown> | null;
-        return {
+        const item = {
           id: a.id,
           role: a.title,
           company: course ? ((course.code as string) || (course.name as string)) : "Unknown",
           url: "",
           due_at: a.due_at,
-          remind_at: a.remind_at,
         };
-      });
-      return NextResponse.json({ success: true, data: reminders }, { headers: CORS });
-    }
-
-    // ── snooze_reminder ───────────────────────────────────────────────────────
-    if (action === "snooze_reminder") {
-      const { id } = p as { id: string };
-      if (!id) return NextResponse.json({ success: false, error: "id is required" }, { status: 400, headers: CORS });
-
-      // Fetch current remind_at
-      const { data: existing, error: fetchErr } = await supabase
-        .from("assignments")
-        .select("remind_at")
-        .eq("id", id)
-        .single();
-      if (fetchErr || !existing) {
-        return NextResponse.json({ success: false, error: "Not found" }, { status: 404, headers: CORS });
+        if (new Date(a.due_at as string).getTime() <= in3Days) {
+          dueSoon.push(item);
+        } else {
+          dueThisWeek.push(item);
+        }
       }
-      const base = existing.remind_at ? new Date(existing.remind_at) : new Date();
-      base.setHours(base.getHours() + 1);
 
-      const { data, error } = await supabase
-        .from("assignments")
-        .update({ remind_at: base.toISOString() })
-        .eq("id", id)
-        .select("*, course:courses(*)")
-        .single();
-      if (error) throw error;
-      return NextResponse.json({ success: true, data }, { headers: CORS });
+      return NextResponse.json({
+        success: true,
+        data: { due_within_3_days: dueSoon, due_within_7_days: dueThisWeek },
+      }, { headers: CORS });
     }
 
     return NextResponse.json({ success: false, error: `Unknown action: ${action}` }, { status: 400, headers: CORS });

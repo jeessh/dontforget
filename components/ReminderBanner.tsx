@@ -33,15 +33,6 @@ export default function ReminderBanner() {
     load();
   }
 
-  async function snooze(id: string) {
-    await fetch(`/api/assignments/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ remind_at: new Date(Date.now() + 3600_000).toISOString() }),
-    });
-    load();
-  }
-
   if (reminders.length === 0) return null;
 
   return (
@@ -70,12 +61,6 @@ export default function ReminderBanner() {
                 className="text-xs px-2.5 py-1 rounded-md bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 hover:opacity-80 transition-opacity"
               >
                 Done
-              </button>
-              <button
-                onClick={() => snooze(r.id)}
-                className="text-xs px-2.5 py-1 rounded-md bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 hover:opacity-80 transition-opacity"
-              >
-                Snooze 1h
               </button>
               <button
                 onClick={() => setReminders(prev => prev.filter(x => x.id !== r.id))}

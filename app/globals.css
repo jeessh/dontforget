@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 @layer base {
-  /* light mode: warm rose/pink */
+  /* light mode: clean white surfaces, rose accent only */
   :root {
-    --background: 350 40% 97%;
-    --foreground: 345 30% 15%;
-    --card: 350 30% 93%;
-    --card-foreground: 345 30% 15%;
-    --muted: 350 20% 88%;
-    --muted-foreground: 345 15% 47%;
-    --border: 350 18% 84%;
-    --input: 350 18% 84%;
-    --ring: 347 70% 52%;
-    --accent: 347 70% 52%;
+    --background: 350 12% 96%;
+    --foreground: 345 20% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 345 20% 12%;
+    --muted: 350 8% 92%;
+    --muted-foreground: 345 6% 46%;
+    --border: 350 8% 87%;
+    --input: 350 8% 87%;
+    --ring: 347 65% 55%;
+    --accent: 347 65% 55%;
     --accent-foreground: 0 0% 100%;
   }
 
