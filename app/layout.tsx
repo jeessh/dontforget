@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased min-h-screen`}>
         {children}
-        <div className="fixed bottom-5 right-5 z-50 flex items-center gap-2">
+        <div className="fixed bottom-5 right-5 z-50 flex flex-col items-center gap-2">
           <a
             href="https://jesseverse.vercel.app"
             target="_blank"
