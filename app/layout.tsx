@@ -23,16 +23,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased min-h-screen`}>
         {children}
         <div className="fixed bottom-5 right-5 z-50 flex flex-col items-center gap-2">
+          <ThemeToggle />
           <a
             href="https://jesseverse.vercel.app"
-            target="_blank"
-            rel="noopener noreferrer"
             aria-label="Back to Jesseverse"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-muted-foreground shadow-sm transition-all hover:shadow-md hover:text-foreground"
           >
             <Home size={18} />
           </a>
-          <ThemeToggle />
         </div>
       </body>
     </html>
