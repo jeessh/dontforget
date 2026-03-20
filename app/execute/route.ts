@@ -13,8 +13,14 @@ export async function OPTIONS() {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const { action, parameters: p = {} } = body as { action: string; parameters: Record<string, unknown> };
+  let body: { action: string; parameters?: Record<string, unknown> };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ success: false, error: "Invalid JSON body" }, { headers: CORS });
+  }
+
+  const { action, parameters: p = {} } = body;
   const supabase = getSupabase();
 
   try {
@@ -34,7 +40,7 @@ export async function POST(req: NextRequest) {
         name: string; code?: string; color?: string;
       };
       if (!name?.toString().trim()) {
-        return NextResponse.json({ success: false, error: "name is required" }, { status: 400, headers: CORS });
+        return NextResponse.json({ success: false, error: "name is required" }, { headers: CORS });
       }
       const { data, error } = await supabase
         .from("courses")
@@ -48,7 +54,7 @@ export async function POST(req: NextRequest) {
     // ── delete_course ─────────────────────────────────────────────────────────
     if (action === "delete_course") {
       const { id } = p as { id: string };
-      if (!id) return NextResponse.json({ success: false, error: "id is required" }, { status: 400, headers: CORS });
+      if (!id) return NextResponse.json({ success: false, error: "id is required" }, { headers: CORS });
       const { error } = await supabase.from("courses").delete().eq("id", id);
       if (error) throw error;
       return NextResponse.json({ success: true, data: { deleted: true, id } }, { headers: CORS });
@@ -74,13 +80,13 @@ export async function POST(req: NextRequest) {
     // ── get_assignment ────────────────────────────────────────────────────────
     if (action === "get_assignment") {
       const { id } = p as { id: string };
-      if (!id) return NextResponse.json({ success: false, error: "id is required" }, { status: 400, headers: CORS });
+      if (!id) return NextResponse.json({ success: false, error: "id is required" }, { headers: CORS });
       const { data, error } = await supabase
         .from("assignments")
         .select("*, course:courses(*)")
         .eq("id", id)
         .single();
-      if (error || !data) return NextResponse.json({ success: false, error: "Not found" }, { status: 404, headers: CORS });
+      if (error || !data) return NextResponse.json({ success: false, error: "Not found" }, { headers: CORS });
       return NextResponse.json({ success: true, data }, { headers: CORS });
     }
 
@@ -93,9 +99,9 @@ export async function POST(req: NextRequest) {
         course_id: string; title: string; type?: string;
         due_at: string; weight?: number; description?: string;
       };
-      if (!course_id) return NextResponse.json({ success: false, error: "course_id is required" }, { status: 400, headers: CORS });
-      if (!title?.toString().trim()) return NextResponse.json({ success: false, error: "title is required" }, { status: 400, headers: CORS });
-      if (!due_at) return NextResponse.json({ success: false, error: "due_at is required" }, { status: 400, headers: CORS });
+      if (!course_id) return NextResponse.json({ success: false, error: "course_id is required" }, { headers: CORS });
+      if (!title?.toString().trim()) return NextResponse.json({ success: false, error: "title is required" }, { headers: CORS });
+      if (!due_at) return NextResponse.json({ success: false, error: "due_at is required" }, { headers: CORS });
 
       const remind_at = defaultRemindAt(due_at.toString());
       const { data, error } = await supabase
@@ -114,7 +120,7 @@ export async function POST(req: NextRequest) {
     // ── update_assignment ─────────────────────────────────────────────────────
     if (action === "update_assignment") {
       const { id, ...rest } = p as { id: string; [k: string]: unknown };
-      if (!id) return NextResponse.json({ success: false, error: "id is required" }, { status: 400, headers: CORS });
+      if (!id) return NextResponse.json({ success: false, error: "id is required" }, { headers: CORS });
 
       const DONE = new Set(["submitted", "completed"]);
       if (rest.status && DONE.has(rest.status as string) && !("remind_at" in rest)) {
@@ -140,7 +146,7 @@ export async function POST(req: NextRequest) {
     // ── delete_assignment ─────────────────────────────────────────────────────
     if (action === "delete_assignment") {
       const { id } = p as { id: string };
-      if (!id) return NextResponse.json({ success: false, error: "id is required" }, { status: 400, headers: CORS });
+      if (!id) return NextResponse.json({ success: false, error: "id is required" }, { headers: CORS });
       const { error } = await supabase.from("assignments").delete().eq("id", id);
       if (error) throw error;
       return NextResponse.json({ success: true, data: { deleted: true, id } }, { headers: CORS });
@@ -186,7 +192,7 @@ export async function POST(req: NextRequest) {
       }, { headers: CORS });
     }
 
-    return NextResponse.json({ success: false, error: `Unknown action: ${action}` }, { status: 400, headers: CORS });
+    return NextResponse.json({ success: false, error: `Unknown action: ${action}` }, { headers: CORS });
 
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Internal server error";
